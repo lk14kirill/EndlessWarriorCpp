@@ -9,10 +9,9 @@ void Physics::Gravity(Actor * actor,float mass,float deltaTime)
 	if (isJumping || IsGrounded(actor)) return;
 
 	Vector2f prevPos = actor->GetObject()->getPosition();
-	float yAdd = 10*mass * deltaTime;
-	yAdd+=prevPos.y;
+	float yAdd = gForce*mass * deltaTime;
 
-	actor->GetObject()->setPosition(Vector2f(prevPos.x,yAdd));
+	actor->GetObject()->setPosition(Vector2f(prevPos.x,yAdd + prevPos.y));
 }
 void Physics::Jump(Actor* actor,float force,float deltaTime)
 {
@@ -39,10 +38,14 @@ void Physics::Impulse(Actor* actor, float deltaTime)
 	float yToAdd;
 	float remainsY = actor->GetObject()->getPosition().y-targetYForJump;
 	Vector2f prevPos = actor->GetObject()->getPosition();
+
+	//if jump is close to end,y value dont has to be dependent on deltatime 
+	//otherwise it wont end 
 	if (remainsY > 3)
-		yToAdd = 10 * remainsY * deltaTime;
+		yToAdd = gForce * remainsY * deltaTime;
 	else
-		yToAdd = 1;
+		yToAdd = 4;
+
 	actor->GetObject()->setPosition(Vector2f(prevPos.x, prevPos.y - yToAdd));
 }
 void Physics::CheckForEnd(Actor* actor)
@@ -61,7 +64,7 @@ bool Physics::IsJumping()
 bool Physics::IsGrounded(Actor * actor) 
 {
 	float yToCalculate = actor->GetObject()->getPosition().y + actor->GetObject()->getSize().y;
-	bool isGrounded = yToCalculate < Values::windowY - 5 ? false : true;
+	bool isGrounded = yToCalculate < Values::windowY - groundOffset ? false : true;
 
 	if (isGrounded) canJump = true;
 	else canJump = false;

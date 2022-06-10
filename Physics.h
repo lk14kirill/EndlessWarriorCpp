@@ -15,5 +15,7 @@ private:
 	bool canJump = true;
 	bool isJumping = false;
 	float targetYForJump;
+	const float gForce = 9.8f;
+	float groundOffset = 5;
 };
 

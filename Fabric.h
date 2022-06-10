@@ -10,6 +10,6 @@ class Fabric
 {
 public:
 	void RegisterObject(UpdatableObjects* updatables, DrawableObjects* drawables, Actor* object);
-	void UnRegisterObject(UpdatableObjects* updatables, DrawableObjects* drawables, Actor* object);
+	void UnregisterObject(UpdatableObjects* updatables, DrawableObjects* drawables, Actor* object);
 };
 

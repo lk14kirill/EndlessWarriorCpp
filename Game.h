@@ -20,13 +20,14 @@ public:
 private:
 	void WindowClose();
 	void GetInput();
-	void CreateClassObjects();
+	void CreateObjects();
+	void DeleteObjects();
 	void WaitNextFrame();
 	
 	bool isGameEnded=false;
 	float totalTimeElapsed=0;
 	float timeUntilupdate =1;
-	static float deltaTime;
+	float deltaTime = 0;
 	float prevTimeElapsed = 0;
 	float totaltimeUntilUpdate = 0;
 	float time=0;	

@@ -1,16 +1,16 @@
 #pragma once
 #include "FightActor.h"
-class Player : public FightActor
+class Enemy : public FightActor
 {
 public:
-	Player();
+	Enemy();
 	void Attack(FightActor* actor, float damage) override;
 	void Update(sf::Vector2f playerPos, sf::Vector2f direction, float time) override;
 	void Flip() override;
 	void Move() override;
-	void Jump(float time);
-    //void PassInput(Vector2f moveDirection,)
-	~Player();
+	~Enemy();
 private:
-	sf::Vector2f moveDirection = sf::Vector2f(0,0);
+	void CalculateMoveDirection(sf::Vector2f targetPos);
+	sf::Vector2f moveDirection = sf::Vector2f(0, 0);
 };
+

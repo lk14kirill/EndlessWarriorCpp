@@ -7,19 +7,19 @@
 #include "UpdatableObjects.h"
 #include "DrawableObjects.h"
 #include "Player.h" 
+#include "Enemy.h" 
 
 void Game::Init()
 {
     fabric->RegisterObject(updateObjects, drawObjects, new Player());
+    fabric->RegisterObject(updateObjects, drawObjects, new Enemy());
     timeUntilupdate /= Values::targetFPS;
 }
-    float Game::deltaTime = 0;
 void Game::PlayGame()
 {
     while ((*window).isOpen() && !isGameEnded)
         GameCycle();
 }
-using namespace std;
 void Game::GameCycle()
 {
     WaitNextFrame();
@@ -29,7 +29,7 @@ void Game::GameCycle()
         WindowClose();
         
         GetInput();
-        updateObjects->Update(direction,time);
+        updateObjects->Update(updateObjects->GetPlayer()->GetObject()->getPosition(), direction, time);
 
         (*window).clear(Color::White);
         drawObjects->Draw(window);
@@ -44,7 +44,6 @@ void Game::WaitNextFrame()
     prevTimeElapsed = totalTimeElapsed;
 
     totaltimeUntilUpdate += deltaTime;
-
 }
 void Game::WindowClose()
 {
@@ -59,25 +58,29 @@ void Game::GetInput()
 {
     direction = InputManager::GetMoveInput();
 }
-void Game::CreateClassObjects()
+void Game::CreateObjects()
 {
     fabric = new Fabric();
     updateObjects = new UpdatableObjects();
     drawObjects = new DrawableObjects();
-    direction = Vector2f(0, 0);
-    window = new RenderWindow(VideoMode(Values::windowX, Values::windowY), "Game");
+    window = new RenderWindow(VideoMode(Values::windowX, Values::windowY), "Game", Style::Fullscreen);
     clock = new Clock();
+    direction = Vector2f(0, 0);
 }
-Game::Game() 
-{
-    CreateClassObjects();   
-    isGameEnded = false;
-}
-Game::~Game()
+void Game::DeleteObjects()
 {
     delete window;
     delete updateObjects;
     delete drawObjects;
     delete fabric;
     delete clock;
+}
+Game::Game() 
+{
+    CreateObjects();   
+    isGameEnded = false;
+}
+Game::~Game()
+{
+    DeleteObjects();
 }

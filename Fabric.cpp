@@ -7,7 +7,7 @@ void Fabric::RegisterObject(UpdatableObjects* updatables, DrawableObjects* drawa
 	updatables->Add(object);
 	drawables->Add(object);
 }
-void Fabric::UnRegisterObject(UpdatableObjects* updatables, DrawableObjects* drawables, Actor* object)
+void Fabric::UnregisterObject(UpdatableObjects* updatables, DrawableObjects* drawables, Actor* object)
 {
 	updatables->Remove(object);
 	drawables->Remove(object);

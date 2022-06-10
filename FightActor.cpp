@@ -1,6 +1,14 @@
 #include "FightActor.h"
-
-void FightActor::Attack(FightActor actor,float damage)
+#include "Physics.h"
+FightActor::FightActor()
+{
+	physics = new Physics();
+}
+FightActor::~FightActor()
+{
+	delete physics;
+}
+void FightActor::Attack(FightActor* actor,float damage)
 {
 
 }

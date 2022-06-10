@@ -8,7 +8,7 @@ class Actor : public IUpdatable,public IDrawable
 public:
 	Actor();
 	virtual ~Actor();
-	virtual void Update(sf::Vector2f direction,float time);
+	virtual void Update(sf::Vector2f playerPos, sf::Vector2f direction, float time);
 	sf::Drawable* GetDrawableGO();
 	sf::RectangleShape* GetObject();
 protected:

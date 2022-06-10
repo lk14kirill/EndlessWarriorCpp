@@ -133,6 +133,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="DrawableObjects.cpp" />
     <ClCompile Include="EndlessWarriorCpp.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fabric.cpp" />
     <ClCompile Include="FightActor.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="DrawableObjects.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fabric.h" />
     <ClInclude Include="FightActor.h" />
     <ClInclude Include="Game.h" />
