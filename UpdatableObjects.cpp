@@ -25,24 +25,6 @@ void UpdatableObjects::Update(sf::Vector2f playerPos, sf::Vector2f direction, fl
 		act->Update(playerPos,direction,time);
 	}
 }
-template<typename T> Actor* UpdatableObjects::GetUpdatable()
-{
-	for(Actor act : updatables)
-	{
-		if (dynamic_cast<const T*>(act))
-			return act;
-	}
-}
-#include "Player.h"
-#include <inspectable.h>
-Actor* UpdatableObjects::GetPlayer()
-{
-	for (Actor* act : updatables)
-	{
-		if (dynamic_cast<const Player*>(act))
-			return act;
-	}
-}
 UpdatableObjects::~UpdatableObjects()
 {
 	for(Actor* act : updatables)

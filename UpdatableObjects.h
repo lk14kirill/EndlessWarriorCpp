@@ -13,8 +13,16 @@ public:
 	UpdatableObjects();
 	~UpdatableObjects();
 	template<typename T> Actor* GetUpdatable();
-	Actor* GetPlayer();
 private:
 	std::vector<Actor*> updatables;
 };
+
+template<typename T> Actor* UpdatableObjects::GetUpdatable()
+{
+	for (Actor* act : updatables)
+	{
+		if (dynamic_cast<const T*>(act))
+			return act;
+	}
+}
 

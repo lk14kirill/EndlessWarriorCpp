@@ -8,12 +8,16 @@
 #include "DrawableObjects.h"
 #include "Player.h" 
 #include "Enemy.h" 
+#include "boost/bind.hpp"
+#include "Controller.h"
 
 void Game::Init()
 {
-    fabric->RegisterObject(updateObjects, drawObjects, new Player());
+    Player* player = new Player();
+    fabric->RegisterObject(updateObjects, drawObjects, player);
     fabric->RegisterObject(updateObjects, drawObjects, new Enemy());
     timeUntilupdate /= Values::targetFPS;
+    OnInput = boost::bind(&Controller::GetInput, player->controller,_1);
 }
 void Game::PlayGame()
 {
@@ -26,10 +30,9 @@ void Game::GameCycle()
     if(totaltimeUntilUpdate >= timeUntilupdate)
     {
         time = clock->restart().asSeconds();
-        WindowClose();
+        PollWindowEvents();
         
-        GetInput();
-        updateObjects->Update(updateObjects->GetPlayer()->GetObject()->getPosition(), direction, time);
+        updateObjects->Update(updateObjects->GetUpdatable<Player>()->GetObject()->getPosition(), direction, time);
 
         (*window).clear(Color::White);
         drawObjects->Draw(window);
@@ -45,18 +48,16 @@ void Game::WaitNextFrame()
 
     totaltimeUntilUpdate += deltaTime;
 }
-void Game::WindowClose()
+void Game::PollWindowEvents()
 {
     Event event;
     while ((*window).pollEvent(event))
     {
         if (event.type == Event::Closed)
             (*window).close();
+        if (event.type == Event::KeyPressed || event.type == Event::MouseButtonPressed)
+            OnInput(event);
     }
-}
-void Game::GetInput() 
-{
-    direction = InputManager::GetMoveInput();
 }
 void Game::CreateObjects()
 {

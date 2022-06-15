@@ -2,6 +2,7 @@
 #include "Values.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "boost/function.hpp"
 
 class UpdatableObjects;
 class DrawableObjects;
@@ -18,11 +19,11 @@ public:
 	void PlayGame();
 	~Game();
 private:
-	void WindowClose();
-	void GetInput();
+	void PollWindowEvents();
 	void CreateObjects();
 	void DeleteObjects();
 	void WaitNextFrame();
+	boost::function<void(sf::Event)> OnInput;
 	
 	bool isGameEnded=false;
 	float totalTimeElapsed=0;
@@ -32,11 +33,12 @@ private:
 	float totaltimeUntilUpdate = 0;
 	float time=0;	
 
+	RenderWindow* window;
 	UpdatableObjects* updateObjects;
 	DrawableObjects* drawObjects;
 	Fabric* fabric;
-	RenderWindow* window;
 	Vector2f direction;
 	Clock* clock;
 };
+
 

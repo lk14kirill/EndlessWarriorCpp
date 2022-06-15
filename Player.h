@@ -1,5 +1,6 @@
 #pragma once
 #include "FightActor.h"
+class Controller;
 class Player : public FightActor
 {
 public:
@@ -9,8 +10,11 @@ public:
 	void Flip() override;
 	void Move() override;
 	void Jump(float time);
-    //void PassInput(Vector2f moveDirection,)
 	~Player();
+	Controller* controller;
 private:
+	void Delegates();
+	void MouseInput();
+	void MoveInput();
 	sf::Vector2f moveDirection = sf::Vector2f(0,0);
 };
