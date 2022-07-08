@@ -1,13 +1,16 @@
 #pragma once
 #include "Actor.h"
+#include "vector" 
 
+class Collider;
 class Physics;
 
 class FightActor : public Actor
 {
 public:
 	virtual void Attack(FightActor* actor, float damage);
-	virtual void Move();
+	virtual void TryAttack();
+	virtual void Move(std::vector<Actor*> updatables);
 	virtual void Flip();
 	FightActor();
 	virtual ~FightActor();
@@ -19,6 +22,8 @@ public:
 
 protected:
 	Physics* physics;
+	Collider* collider;
+
 	float attackDistance = 1;
 };
 

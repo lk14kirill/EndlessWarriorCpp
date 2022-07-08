@@ -17,6 +17,6 @@ sf::RectangleShape* Actor::GetObject()
 {
 	return object;
 }
-void Actor::Update(sf::Vector2f playerPos, sf::Vector2f direction, float time)
+void Actor::Update(UpdatableObjects* updatables, float time)
 {
 }

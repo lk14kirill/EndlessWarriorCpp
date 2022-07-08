@@ -3,6 +3,9 @@
 #include "SFML/Graphics.hpp"
 #include "NormalizedVector.h"
 #include "Physics.h"
+#include "UpdatableObjects.h"
+#include "Player.h"
+#include "Collider.h"
 
 Enemy::Enemy()
 {
@@ -10,11 +13,11 @@ Enemy::Enemy()
 	object->setPosition(sf::Vector2f(100, 500));
 	speed = 2;
 }
-void Enemy::Update(sf::Vector2f playerPos, sf::Vector2f direction, float time)
+void Enemy::Update(UpdatableObjects* updatables, float time)
 {
 	physics->Gravity(this, 50, time);
-	CalculateMoveDirection(playerPos);
-	Move();
+	CalculateMoveDirection(updatables->GetUpdatable<Player>()->GetObject()->getPosition());
+	Move(updatables->updatables);
 	Attack(this, 1);
 }
 void Enemy::Flip()
@@ -27,12 +30,17 @@ void Enemy::CalculateMoveDirection(sf::Vector2f targetPos)
 	float length = sqrt(distance.x * distance.x + distance.y * distance.y);  
 	moveDirection = Vector2f(distance.x /length, 0);
 }
-void Enemy::Move()
+void Enemy::Move(std::vector<Actor*> updatables)
 {
+	if(!collider->IsColliding(this,moveDirection, updatables))
 	object->setPosition(object->getPosition() + moveDirection * speed);
 }
 void Enemy::Attack(FightActor* actor, float damage)
 {
+}
+void Enemy::TryAttack()
+{
+
 }
 Enemy::~Enemy()
 {

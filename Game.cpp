@@ -31,8 +31,8 @@ void Game::GameCycle()
     {
         time = clock->restart().asSeconds();
         PollWindowEvents();
-        
-        updateObjects->Update(updateObjects->GetUpdatable<Player>()->GetObject()->getPosition(), direction, time);
+
+        updateObjects->Update(time);
 
         (*window).clear(Color::White);
         drawObjects->Draw(window);
@@ -55,7 +55,7 @@ void Game::PollWindowEvents()
     {
         if (event.type == Event::Closed)
             (*window).close();
-        if (event.type == Event::KeyPressed || event.type == Event::MouseButtonPressed)
+        //if (event.type == Event::KeyPressed || event.type == Event::MouseButtonPressed)
             OnInput(event);
     }
 }

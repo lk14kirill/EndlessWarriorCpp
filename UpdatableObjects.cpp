@@ -18,11 +18,11 @@ void UpdatableObjects::Remove(Actor* updatable)
 		}
 	}
 }
-void UpdatableObjects::Update(sf::Vector2f playerPos, sf::Vector2f direction, float time)
+void UpdatableObjects::Update(float time)
 {
 	for(Actor* act : updatables)
 	{
-		act->Update(playerPos,direction,time);
+		act->Update(this,time);
 	}
 }
 UpdatableObjects::~UpdatableObjects()

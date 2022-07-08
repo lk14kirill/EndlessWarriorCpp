@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DrawableObjects.cpp" />
     <ClCompile Include="EndlessWarriorCpp.cpp" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="DrawableObjects.h" />
     <ClInclude Include="Enemy.h" />
