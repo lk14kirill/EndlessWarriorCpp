@@ -9,28 +9,32 @@
 #include "Enemy.h" 
 #include "Collider.h"
 
+#include "iostream"
 Player::Player() 
 {
 	controller = new Controller();
 	object->setFillColor(sf::Color::Blue);
 	object->setPosition(sf::Vector2f(500, 500));
-	speed = 5;
-	controller->OnMouseClick = boost::bind(&Player::MouseInput, this,_1);
-	controller->OnKeyboardClick = boost::bind(&Player::MoveInput, this,_1);
+	speed = 7;
+	controller->OnMouseClick = boost::bind(&Player::MouseInput, this);
+	controller->OnKeyboardClick = boost::bind(&Player::MoveInput, this);
 }
 void Player::Delegates()
 {
 	//controller.OnMouseClick = boost::bind(&MouseInput, this);
 }
-#include "iostream"
+
 void Player::Update(UpdatableObjects* updatables, float time)
 {
 	enemies = updatables->GetUpdatables<Enemy>();
 	lastDeltaTime = time;
-	physics->Gravity(this,50,time);
-	Move(updatables->updatables);
-	if (physics->IsJumping())
-		Jump();
+
+	moveDirection += physics->Update(this, jumpForce, mass, time);
+	//moveDirection = collider->Update(this, moveDirection, enemies);
+	collider->Update(this, moveDirection, enemies);
+
+	Move(enemies);
+
 	EndUpdate();
 }
 void Player::Flip() 
@@ -39,31 +43,26 @@ void Player::Flip()
 }
 void Player::EndUpdate()
 {
-	//moveDirection = Vector2f(0, 0);
 	enemies.clear();
 	lastDeltaTime = 0;
+	moveDirection = Vector2f(0, 0);
 }
-void Player::MoveInput(Event event)
+void Player::MoveInput()
 {
-	/*if (event.key.code == Keyboard::A)
-		moveDirection = NormalizedVector::left;
-	else if (event.key.code == Keyboard::D)
-		moveDirection = NormalizedVector::right;
-	else
-		moveDirection = Vector2f(0, 0);*/
 	if (Keyboard::isKeyPressed(Keyboard::A))
-		moveDirection = NormalizedVector::left;
+		moveDirection += NormalizedVector::left;
 	else if (Keyboard::isKeyPressed(Keyboard::D))
-		moveDirection = NormalizedVector::right;
+		moveDirection += NormalizedVector::right;
 	else
-		moveDirection = Vector2f(0, 0);
+		moveDirection += Vector2f(0, 0);
+	moveDirection *= speed;
 
 	if (Keyboard::isKeyPressed(Keyboard::Space))
 		Jump();
 }
-void Player::MouseInput(Event event)
+void Player::MouseInput()
 {
-	if(event.key.code == Mouse::Left)
+	if(Mouse::isButtonPressed(Mouse::Left))
 	  Attack(this,1);
 }
 void Player::TryAttack()
@@ -72,12 +71,15 @@ void Player::TryAttack()
 }
 void Player::Move(std::vector<Actor*> updatables)
 {
-	if(!collider->IsColliding(this,moveDirection , updatables))
-		object->setPosition(object->getPosition() + moveDirection * speed);
+	if (!collider->IsColliding(this, moveDirection, enemies))
+		object->setPosition(object->getPosition() + moveDirection);
 }
 void Player::Jump()
 {
+	if (!collider->IsColliding(this, moveDirection, enemies))
 		physics->Jump(this, 20, lastDeltaTime);
+	else
+		physics->StopJump();
 }
 
 void Player::Attack(FightActor* actor, float damage)

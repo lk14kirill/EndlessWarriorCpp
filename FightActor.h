@@ -23,7 +23,8 @@ public:
 protected:
 	Physics* physics;
 	Collider* collider;
-
+	
+	float mass = 50;
 	float attackDistance = 1;
 };
 

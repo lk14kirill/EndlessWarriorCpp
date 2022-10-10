@@ -23,9 +23,13 @@ private:
 	void CreateObjects();
 	void DeleteObjects();
 	void WaitNextFrame();
-	boost::function<void(sf::Event)> OnInput;
+	void Input();
+	boost::function<void()> OnMouseInput;
+	boost::function<void()> OnKeyboardInput;
 	
 	bool isGameEnded=false;
+	bool isKeysPressed = false;
+	bool isMousePressed = false;
 	float totalTimeElapsed=0;
 	float timeUntilupdate =1;
 	float deltaTime = 0;
@@ -33,6 +37,7 @@ private:
 	float totaltimeUntilUpdate = 0;
 	float time=0;	
 
+	sf::Event mouseEvent;
 	RenderWindow* window;
 	UpdatableObjects* updateObjects;
 	DrawableObjects* drawObjects;

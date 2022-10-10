@@ -5,8 +5,9 @@
 class Controller
 {
 public:
-	void GetInput(sf::Event event);
-	boost::function<void(sf::Event)> OnMouseClick;
-	boost::function<void(sf::Event)> OnKeyboardClick;
+	void GetKeyboardInput();
+	void GetMouseInput();
+	boost::function<void()> OnMouseClick;
+	boost::function<void()> OnKeyboardClick;
 };
 

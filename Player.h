@@ -21,11 +21,12 @@ private:
 	void TryAttack() override;
 	void EndUpdate();
 	void Delegates();
-	void MouseInput(sf::Event event);
-	void MoveInput(sf::Event event);
+	void MouseInput();
+	void MoveInput();
 	sf::Vector2f GetAttackDirection();
 
 	sf::Vector2f moveDirection = sf::Vector2f(0,0);
 	std::vector<Actor*> enemies;
+	float jumpForce = 20;
 	float lastDeltaTime;
 };

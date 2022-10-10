@@ -1,31 +1,40 @@
 #include "Physics.h"
 #include "Actor.h"
-#include "SFML/Graphics.hpp"
 #include "Values.h"
 
 using namespace sf;
-void Physics::Gravity(Actor * actor,float mass,float deltaTime)
+Vector2f Physics::Update(Actor* actor, float jumpForce, float mass, float time)
 {
-	if (isJumping || IsGrounded(actor)) return;
+	Vector2f direction = Vector2f(0, 0);
+	direction += Gravity(actor, mass, time);
+	if (IsJumping())
+		direction += Jump(actor, jumpForce, time);
+	return direction;
+}
+Vector2f Physics::Gravity(Actor * actor,float mass,float deltaTime)
+{
+	if (isJumping || IsGrounded(actor)) return Vector2f(0,0);
 
 	Vector2f prevPos = actor->GetObject()->getPosition();
 	float yAdd = gForce*mass * deltaTime;
 
-	actor->GetObject()->setPosition(Vector2f(prevPos.x,yAdd + prevPos.y));
+	return Vector2f(0,yAdd);
 }
-void Physics::Jump(Actor* actor,float force,float deltaTime)
+Vector2f Physics::Jump(Actor* actor,float force,float deltaTime)
 {
+	Vector2f direction;
 	if(canJump && !isJumping)
 	{
 		StartJump(actor, force);
-		Impulse(actor, deltaTime); 
+		direction = Impulse(actor, deltaTime); 
 		CheckForEnd(actor);
 	}	
 	if (isJumping)
 	{
-		Impulse(actor, deltaTime);
+		direction = Impulse(actor, deltaTime);
 		CheckForEnd(actor);
 	}
+	return direction;
 }
 void Physics::StartJump(Actor* actor,float force)
 {
@@ -33,7 +42,7 @@ void Physics::StartJump(Actor* actor,float force)
 	isJumping = true;
 	canJump = false;
 }
-void Physics::Impulse(Actor* actor, float deltaTime)
+Vector2f Physics::Impulse(Actor* actor, float deltaTime)
 {
 	float yToAdd;
 	float remainsY = actor->GetObject()->getPosition().y-targetYForJump;
@@ -46,20 +55,24 @@ void Physics::Impulse(Actor* actor, float deltaTime)
 	else
 		yToAdd = 4;
 
-	actor->GetObject()->setPosition(Vector2f(prevPos.x, prevPos.y - yToAdd));
+    return Vector2f(0,  yToAdd);
 }
 void Physics::CheckForEnd(Actor* actor)
 {
 	if (actor->GetObject()->getPosition().y <= targetYForJump)
 	{
-		isJumping = false;
-		canJump = true;
-		targetYForJump = 0;
+		StopJump();
 	}
 }
 bool Physics::IsJumping()
 {
 	return isJumping;
+}
+void Physics::StopJump()
+{
+	isJumping = false;
+	canJump = true;
+	targetYForJump = 0;
 }
 bool Physics::IsGrounded(Actor * actor) 
 {

@@ -15,7 +15,7 @@ Enemy::Enemy()
 }
 void Enemy::Update(UpdatableObjects* updatables, float time)
 {
-	physics->Gravity(this, 50, time);
+	physics->Update(this, 0,mass, time);
 	CalculateMoveDirection(updatables->GetUpdatable<Player>()->GetObject()->getPosition());
 	Move(updatables->updatables);
 	Attack(this, 1);

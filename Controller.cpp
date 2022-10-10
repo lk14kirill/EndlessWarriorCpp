@@ -2,8 +2,11 @@
 #include "Game.h"
 #include "iostream"
 
-void Controller::GetInput(sf::Event event)
+void Controller::GetKeyboardInput()
 {
-      OnKeyboardClick(event);
-      OnMouseClick(event);
+      OnKeyboardClick();
+}
+void Controller::GetMouseInput()
+{
+    OnMouseClick();
 }

@@ -17,7 +17,16 @@ void Game::Init()
     fabric->RegisterObject(updateObjects, drawObjects, player);
     fabric->RegisterObject(updateObjects, drawObjects, new Enemy());
     timeUntilupdate /= Values::targetFPS;
-    OnInput = boost::bind(&Controller::GetInput, player->controller,_1);
+    OnMouseInput = boost::bind(&Controller::GetMouseInput, player->controller);
+    OnKeyboardInput = boost::bind(&Controller::GetKeyboardInput, player->controller);
+}
+void Game::Input()
+{
+    if (isKeysPressed)
+        OnKeyboardInput();
+    if (isMousePressed)
+        OnMouseInput();
+ 
 }
 void Game::PlayGame()
 {
@@ -30,7 +39,10 @@ void Game::GameCycle()
     if(totaltimeUntilUpdate >= timeUntilupdate)
     {
         time = clock->restart().asSeconds();
+        std::cout << totalTimeElapsed << std::endl;
         PollWindowEvents();
+
+        Input();
 
         updateObjects->Update(time);
 
@@ -53,10 +65,30 @@ void Game::PollWindowEvents()
     Event event;
     while ((*window).pollEvent(event))
     {
-        if (event.type == Event::Closed)
+        switch(event.type)
+        {
+        case Event::Closed:
             (*window).close();
+            break;
+        case Event::KeyPressed:
+            isKeysPressed = true;
+            break;
+        case Event::MouseButtonPressed:
+            isMousePressed = true;
+            mouseEvent = event;
+            break;
+        case Event::KeyReleased:
+            isKeysPressed = false;
+            break;
+        case Event::MouseButtonReleased:
+            isMousePressed = false;
+            mouseEvent = event;
+            break;
+        }
+        //if (event.type == Event::Closed)
+        //    (*window).close();
         //if (event.type == Event::KeyPressed || event.type == Event::MouseButtonPressed)
-            OnInput(event);
+        //    OnInput(event);
     }
 }
 void Game::CreateObjects()
