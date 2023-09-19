@@ -6,9 +6,10 @@ using namespace sf;
 Vector2f Physics::Update(Actor* actor, float jumpForce, float mass, float time)
 {
 	Vector2f direction = Vector2f(0, 0);
-	direction += Gravity(actor, mass, time);
+    direction += Gravity(actor, mass, time);
+
 	if (IsJumping())
-		direction += Jump(actor, jumpForce, time);
+		 Jump(actor, jumpForce, time);
 	return direction;
 }
 Vector2f Physics::Gravity(Actor * actor,float mass,float deltaTime)
@@ -34,6 +35,7 @@ Vector2f Physics::Jump(Actor* actor,float force,float deltaTime)
 		direction = Impulse(actor, deltaTime);
 		CheckForEnd(actor);
 	}
+	actor->AddPosition(direction);
 	return direction;
 }
 void Physics::StartJump(Actor* actor,float force)
@@ -55,7 +57,11 @@ Vector2f Physics::Impulse(Actor* actor, float deltaTime)
 	else
 		yToAdd = 4;
 
-    return Vector2f(0,  yToAdd);
+	actor->AddPosition(Vector2f(0, -yToAdd));
+
+	//We are adding minus,because system calculate ground as max y.
+	//So to get up we need to minus.
+    return Vector2f(0,  -yToAdd);
 }
 void Physics::CheckForEnd(Actor* actor)
 {
@@ -76,8 +82,9 @@ void Physics::StopJump()
 }
 bool Physics::IsGrounded(Actor * actor) 
 {
-	float yToCalculate = actor->GetObject()->getPosition().y + actor->GetObject()->getSize().y;
-	bool isGrounded = yToCalculate < Values::windowY - groundOffset ? false : true;
+	float yToCalculate = actor->GetPosition().y + actor->GetObject()->getSize().y;
+	bool isGrounded = yToCalculate > Values::windowY - 1.5f * groundOffset 
+		&& yToCalculate < Values::windowY - groundOffset ? true : false;
 
 	if (isGrounded) canJump = true;
 	else canJump = false;

@@ -21,7 +21,6 @@ Player::Player()
 }
 void Player::Delegates()
 {
-	//controller.OnMouseClick = boost::bind(&MouseInput, this);
 }
 
 void Player::Update(UpdatableObjects* updatables, float time)
@@ -29,19 +28,21 @@ void Player::Update(UpdatableObjects* updatables, float time)
 	enemies = updatables->GetUpdatables<Enemy>();
 	lastDeltaTime = time;
 
-	moveDirection += physics->Update(this, jumpForce, mass, time);
-	//moveDirection = collider->Update(this, moveDirection, enemies);
+	Vector2f gforce = physics->Update(this, jumpForce, mass, time);
+	if (!collider->IsColliding(this, moveDirection, enemies,CollisionType::both))
+		AddPosition(gforce);
+
 	collider->Update(this, moveDirection, enemies);
 
 	Move(enemies);
 
-	EndUpdate();
+	LastUpdate();
 }
 void Player::Flip() 
 {
 
 }
-void Player::EndUpdate()
+void Player::LastUpdate()
 {
 	enemies.clear();
 	lastDeltaTime = 0;
@@ -71,13 +72,13 @@ void Player::TryAttack()
 }
 void Player::Move(std::vector<Actor*> updatables)
 {
-	if (!collider->IsColliding(this, moveDirection, enemies))
-		object->setPosition(object->getPosition() + moveDirection);
+	if (!collider->IsColliding(this, moveDirection, enemies,CollisionType::both))
+		AddPosition(moveDirection);
 }
 void Player::Jump()
 {
-	if (!collider->IsColliding(this, moveDirection, enemies))
-		physics->Jump(this, 20, lastDeltaTime);
+	if (!collider->IsColliding(this, moveDirection, enemies,CollisionType::both))
+		physics->Jump(this, jumpForce, lastDeltaTime);
 	else
 		physics->StopJump();
 }

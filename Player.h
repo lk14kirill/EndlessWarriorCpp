@@ -19,7 +19,7 @@ public:
 	Controller* controller;
 private:
 	void TryAttack() override;
-	void EndUpdate();
+	void LastUpdate();
 	void Delegates();
 	void MouseInput();
 	void MoveInput();

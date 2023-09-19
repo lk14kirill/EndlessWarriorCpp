@@ -15,6 +15,7 @@ public:
 private:
 	void TryAttack() override;
 	void CalculateMoveDirection(sf::Vector2f targetPos);
+	void LastUpdate();
 	Actor* target;
 	sf::Vector2f moveDirection = sf::Vector2f(0, 0);
 };

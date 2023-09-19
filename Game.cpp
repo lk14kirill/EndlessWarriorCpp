@@ -26,7 +26,6 @@ void Game::Input()
         OnKeyboardInput();
     if (isMousePressed)
         OnMouseInput();
- 
 }
 void Game::PlayGame()
 {
@@ -35,11 +34,11 @@ void Game::PlayGame()
 }
 void Game::GameCycle()
 {
+    
     WaitNextFrame();
     if(totaltimeUntilUpdate >= timeUntilupdate)
     {
-        time = clock->restart().asSeconds();
-        std::cout << totalTimeElapsed << std::endl;
+        time = clock->restart().asSeconds();   
         PollWindowEvents();
 
         Input();
@@ -65,30 +64,26 @@ void Game::PollWindowEvents()
     Event event;
     while ((*window).pollEvent(event))
     {
+    
         switch(event.type)
         {
         case Event::Closed:
             (*window).close();
             break;
-        case Event::KeyPressed:
-            isKeysPressed = true;
-            break;
         case Event::MouseButtonPressed:
             isMousePressed = true;
             mouseEvent = event;
             break;
-        case Event::KeyReleased:
-            isKeysPressed = false;
-            break;
         case Event::MouseButtonReleased:
             isMousePressed = false;
-            mouseEvent = event;
+            break;
+        case Event::KeyReleased:
+              isKeysPressed = false;
+            break;
+        case Event::KeyPressed:
+            isKeysPressed = true;                       
             break;
         }
-        //if (event.type == Event::Closed)
-        //    (*window).close();
-        //if (event.type == Event::KeyPressed || event.type == Event::MouseButtonPressed)
-        //    OnInput(event);
     }
 }
 void Game::CreateObjects()
@@ -96,7 +91,7 @@ void Game::CreateObjects()
     fabric = new Fabric();
     updateObjects = new UpdatableObjects();
     drawObjects = new DrawableObjects();
-    window = new RenderWindow(VideoMode(Values::windowX, Values::windowY), "Game", Style::Fullscreen);
+    window = new RenderWindow(VideoMode(Values::windowX, Values::windowY), "Endless Warrior", Style::Default);
     clock = new Clock();
     direction = Vector2f(0, 0);
 }
