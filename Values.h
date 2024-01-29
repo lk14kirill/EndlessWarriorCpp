@@ -13,4 +13,8 @@ enum CollisionType
 	vertical,
 	both
 };
+enum DebugMessageType {
+	ERROR,
+	INFO
+};
 

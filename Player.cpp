@@ -8,6 +8,7 @@
 #include "UpdatableObjects.h"
 #include "Enemy.h" 
 #include "Collider.h"
+#include "Debug.h"
 
 #include "iostream"
 Player::Player() 
@@ -37,6 +38,7 @@ void Player::Update(UpdatableObjects* updatables, float time)
 	Move(enemies);
 
 	LastUpdate();
+	
 }
 void Player::Flip() 
 {
@@ -63,7 +65,7 @@ void Player::MoveInput()
 }
 void Player::MouseInput()
 {
-	if(Mouse::isButtonPressed(Mouse::Left))
+	if(canAttack && Mouse::isButtonPressed(Mouse::Left))
 	  Attack(this,1);
 }
 void Player::TryAttack()
@@ -74,13 +76,15 @@ void Player::Move(std::vector<Actor*> updatables)
 {
 	if (!collider->IsColliding(this, moveDirection, enemies,CollisionType::both))
 		AddPosition(moveDirection);
+
 }
 void Player::Jump()
 {
 	if (!collider->IsColliding(this, moveDirection, enemies,CollisionType::both))
 		physics->Jump(this, jumpForce, lastDeltaTime);
-	else
+	else 
 		physics->StopJump();
+
 }
 
 void Player::Attack(FightActor* actor, float damage)

@@ -29,4 +29,5 @@ private:
 	std::vector<Actor*> enemies;
 	float jumpForce = 20;
 	float lastDeltaTime;
+	bool canAttack = true;
 };

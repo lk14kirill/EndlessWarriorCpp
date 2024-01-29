@@ -20,10 +20,11 @@ void Game::Init()
     OnMouseInput = boost::bind(&Controller::GetMouseInput, player->controller);
     OnKeyboardInput = boost::bind(&Controller::GetKeyboardInput, player->controller);
 }
+//https://en.sfml-dev.org/forums/index.php?topic=21258.0
+// thats why I can do same to move input with sfml events
 void Game::Input()
 {
-    if (isKeysPressed)
-        OnKeyboardInput();
+    OnKeyboardInput();
     if (isMousePressed)
         OnMouseInput();
 }
@@ -34,7 +35,7 @@ void Game::PlayGame()
 }
 void Game::GameCycle()
 {
-    
+
     WaitNextFrame();
     if(totaltimeUntilUpdate >= timeUntilupdate)
     {
@@ -76,12 +77,6 @@ void Game::PollWindowEvents()
             break;
         case Event::MouseButtonReleased:
             isMousePressed = false;
-            break;
-        case Event::KeyReleased:
-              isKeysPressed = false;
-            break;
-        case Event::KeyPressed:
-            isKeysPressed = true;                       
             break;
         }
     }
