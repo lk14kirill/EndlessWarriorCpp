@@ -1,6 +1,7 @@
 #pragma once
 #include "FightActor.h"
 #include "vector"
+#include "Fighter.h"
 
 class Actor;
 class Enemy : public FightActor
@@ -11,6 +12,8 @@ public:
 	void Update(UpdatableObjects* updatables, float time) override;
 	void Flip() override;
 	void Move(std::vector<Actor*> updatables) override;
+	Fighter* fighter;
+
 	~Enemy();
 private:
 	void TryAttack() override;

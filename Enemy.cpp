@@ -11,6 +11,7 @@ Enemy::Enemy()
 {
 	object->setFillColor(sf::Color::Green);
 	object->setPosition(sf::Vector2f(100, 500));
+	fighter = new Fighter(100);
 	speed = 2;
 }
 void Enemy::Update(UpdatableObjects* updatables, float time)

@@ -14,6 +14,7 @@
 Player::Player() 
 {
 	controller = new Controller();
+	fighter = new Fighter(100);
 	object->setFillColor(sf::Color::Blue);
 	object->setPosition(sf::Vector2f(500, 500));
 	speed = 7;
@@ -94,5 +95,6 @@ void Player::Attack(FightActor* actor, float damage)
 }
 Player::~Player()
 {
-	//delete controller;
+	delete controller;
+	delete fighter;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "vector"
 #include "FightActor.h"
+#include "Fighter.h" 
 
 class Actor;
 class Controller;
@@ -16,7 +17,9 @@ public:
 	void Jump();
 
 	~Player();
+	Fighter* fighter;
 	Controller* controller;
+
 private:
 	void TryAttack() override;
 	void LastUpdate();

@@ -139,6 +139,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fabric.cpp" />
     <ClCompile Include="FightActor.cpp" />
+    <ClCompile Include="Fighter.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fabric.h" />
     <ClInclude Include="FightActor.h" />
+    <ClInclude Include="Fighter.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="InputManager.h" />
