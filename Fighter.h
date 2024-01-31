@@ -2,14 +2,16 @@
 class Fighter
 {
 public:
-	Fighter(float maxHealth);
+	Fighter();
 	void ApplyDamage(float damage);
 	void ApplyHealing(float health);
 	float GetHealth();
+	void SetMaxHealth(float newMaxHealth);
 	~Fighter();
 
 private:
 	float health;
-	float maxHealth;
+	float maxHealth = 100;
+	bool isDead;
 };
 

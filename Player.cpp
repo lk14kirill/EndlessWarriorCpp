@@ -9,15 +9,17 @@
 #include "Enemy.h" 
 #include "Collider.h"
 #include "Debug.h"
+#include "Ray.h"
 
 #include "iostream"
 Player::Player() 
 {
 	controller = new Controller();
-	fighter = new Fighter(100);
 	object->setFillColor(sf::Color::Blue);
 	object->setPosition(sf::Vector2f(500, 500));
 	speed = 7;
+	attackDistance = 20;
+	ChangeStateTo(State::idle);
 	controller->OnMouseClick = boost::bind(&Player::MouseInput, this);
 	controller->OnKeyboardClick = boost::bind(&Player::MoveInput, this);
 }
@@ -37,7 +39,10 @@ void Player::Update(UpdatableObjects* updatables, float time)
 	collider->Update(this, moveDirection, enemies);
 
 	Move(enemies);
+	AttackCD(lastDeltaTime);
+	Attack(updatables->GetUpdatables<Actor>(), 20);
 
+	
 	LastUpdate();
 	
 }
@@ -64,10 +69,15 @@ void Player::MoveInput()
 	if (Keyboard::isKeyPressed(Keyboard::Space))
 		Jump();
 }
+void Player::ChangeStateTo(State newState)
+{
+	state = newState;
+	Debug::Log("Changed state to " + std::to_string(newState), DebugMessageType::INFO);
+}
 void Player::MouseInput()
 {
-	if(canAttack && Mouse::isButtonPressed(Mouse::Left))
-	  Attack(this,1);
+	if (CanAttack() && Mouse::isButtonPressed(Mouse::Left))
+		ChangeStateTo(State::attack);
 }
 void Player::TryAttack()
 {
@@ -88,10 +98,23 @@ void Player::Jump()
 
 }
 
-void Player::Attack(FightActor* actor, float damage)
+void Player::Attack(std::vector<Actor*> updatables, float damage)
 {
-	Color c = Mouse::isButtonPressed(Mouse::Left) ? Color::Red : Color::Blue;
-	object->setFillColor(c);	
+	if (state != State::attack)
+		return;
+	Ray* ray = physics->RayCast(enemies, collider, sf::Vector2f(GetCenterPosition().x + GetSize().x / 2, GetCenterPosition().y), 
+		NormalizedVector::right, attackDistance);
+	if (ray->GetHitInfo() == nullptr)
+	{
+		Debug::Log("RayHit info is null", DebugMessageType::ERROR);
+		ChangeStateTo(State::idle);
+		return;
+	}
+	FightActor* enemy = dynamic_cast<FightActor*>(ray->GetHitInfo());
+	enemy->fighter->ApplyDamage(20);
+		
+	delete ray;
+	ChangeStateTo(State::idle);
 }
 Player::~Player()
 {

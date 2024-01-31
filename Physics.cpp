@@ -1,6 +1,9 @@
 #include "Physics.h"
 #include "Actor.h"
 #include "Values.h"
+#include "Ray.h"
+#include "Debug.h"
+#include "Collider.h"
 
 using namespace sf;
 Vector2f Physics::Update(Actor* actor, float jumpForce, float mass, float time)
@@ -90,4 +93,18 @@ bool Physics::IsGrounded(Actor * actor)
 	else canJump = false;
 
 	return isGrounded;
+}
+Ray* Physics::RayCast(std::vector<Actor*> updatables,Collider* col,sf::Vector2f origin, sf::Vector2f direction, float length)
+{
+	sf::Vector2f hitPoint = origin + direction * length;
+	Ray* rayHit = new Ray();
+	for (Actor* act : updatables)
+	{
+		if (col->IsPointInBound(hitPoint, act, CollisionType::both))
+		{
+			Debug::Log("Point in bound", DebugMessageType::INFO);
+			rayHit = new Ray(origin, direction, act);
+		}
+	}
+	return rayHit;
 }

@@ -15,6 +15,7 @@ enum CollisionType
 };
 enum DebugMessageType {
 	ERROR,
-	INFO
+	INFO,
+	FUN
 };
 

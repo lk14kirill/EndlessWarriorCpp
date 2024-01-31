@@ -146,6 +146,7 @@
     <ClCompile Include="NormalizedVector.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="UpdatableObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,7 @@
     <ClInclude Include="NormalizedVector.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UpdatableObjects.h" />
     <ClInclude Include="Values.h" />

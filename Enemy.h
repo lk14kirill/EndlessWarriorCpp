@@ -8,11 +8,10 @@ class Enemy : public FightActor
 {
 public:
 	Enemy();
-	void Attack(FightActor* actor, float damage) override;
+	void Attack(std::vector<Actor*> updatables, float damage) override;
 	void Update(UpdatableObjects* updatables, float time) override;
 	void Flip() override;
 	void Move(std::vector<Actor*> updatables) override;
-	Fighter* fighter;
 
 	~Enemy();
 private:

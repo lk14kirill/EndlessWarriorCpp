@@ -6,12 +6,12 @@
 #include "UpdatableObjects.h"
 #include "Player.h"
 #include "Collider.h"
+#include "Debug.h"
 
 Enemy::Enemy()
 {
 	object->setFillColor(sf::Color::Green);
 	object->setPosition(sf::Vector2f(100, 500));
-	fighter = new Fighter(100);
 	speed = 2;
 }
 void Enemy::Update(UpdatableObjects* updatables, float time)
@@ -20,8 +20,9 @@ void Enemy::Update(UpdatableObjects* updatables, float time)
 	AddPosition(physics->Update(this, 0,mass, time));
 	CalculateMoveDirection(updatables->GetUpdatable<Player>()->GetObject()->getPosition());
 	Move(updatables->updatables);
-	Attack(this, 1);
+	Attack(updatables->updatables, 1);
 
+	
 	LastUpdate();
 }
 void Enemy::Flip()
@@ -43,7 +44,7 @@ void Enemy::LastUpdate()
 {
 	moveDirection = Vector2f(0, 0);
 }
-void Enemy::Attack(FightActor* actor, float damage)
+void Enemy::Attack(std::vector<Actor*> updatables, float damage)
 {
 }
 void Enemy::TryAttack()

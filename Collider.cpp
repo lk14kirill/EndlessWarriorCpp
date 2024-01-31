@@ -29,6 +29,27 @@ bool Collider::IsColliding(Actor* actor, sf::Vector2f direction, std::vector<Act
 	}
 	return result;
 }
+bool Collider::IsPointInBound(sf::Vector2f point, Actor* act, CollisionType colType)
+{
+	sf::Vector2f actorPos2 = act->GetCenterPosition();
+	sf::Vector2f halfSize2 = sf::Vector2f(act->GetSize().x / 2, act->GetSize().y / 2);
+
+	bool result = false;
+	switch (colType)
+	{
+	case CollisionType::horizontal:
+		result = IntersectWithPoint(point.x, actorPos2.x -halfSize2.x, actorPos2.x +halfSize2.x);
+		break;
+	case CollisionType::vertical:
+		result = IntersectYWithPoint(point.y, actorPos2.y - halfSize2.y, actorPos2.y + halfSize2.y);
+		break;
+	case CollisionType::both:
+		result = IntersectWithPoint(point.x, actorPos2.x - halfSize2.x, actorPos2.x + halfSize2.x) &&
+			IntersectYWithPoint(point.y, actorPos2.y - halfSize2.y, actorPos2.y + halfSize2.y);
+		break;
+	}
+	return result;
+}
 bool Collider::IsInBound(Actor* actor, sf::Vector2f direction, Actor* act2,CollisionType colType)
 {	 
 	sf::Vector2f actorPos1 = actor->GetCenterPosition() + direction;
@@ -72,5 +93,13 @@ bool Collider::Intersect(float min0, float max0, float min1, float max1)
 }
 bool Collider::IntersectY(float min0, float max0, float min1, float max1)
 {
-	return max0 >= min1 && min0 <= max1;
+	return max0 > min1 && min0 < max1;
+}
+bool Collider::IntersectWithPoint(float x, float min1, float max1)
+{
+	return x >= min1 && x <= max1;
+}
+bool Collider::IntersectYWithPoint(float y, float min1, float max1)
+{
+	return y >= min1 && y <= max1;
 }
