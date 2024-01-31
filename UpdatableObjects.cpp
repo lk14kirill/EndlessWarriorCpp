@@ -13,7 +13,7 @@ void UpdatableObjects::Remove(Actor* updatable)
 	{
 		if (updatables[i]->GetObject() == updatable->GetObject())
 		{
-			delete updatable;
+			
 			updatables.erase(updatables.begin() + i);
 		}
 	}

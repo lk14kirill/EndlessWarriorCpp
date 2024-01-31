@@ -20,6 +20,7 @@ Player::Player()
 	speed = 7;
 	attackDistance = 20;
 	ChangeStateTo(State::idle);
+	attackCDTime = 1;
 	controller->OnMouseClick = boost::bind(&Player::MouseInput, this);
 	controller->OnKeyboardClick = boost::bind(&Player::MoveInput, this);
 }
@@ -111,7 +112,7 @@ void Player::Attack(std::vector<Actor*> updatables, float damage)
 		return;
 	}
 	FightActor* enemy = dynamic_cast<FightActor*>(ray->GetHitInfo());
-	enemy->fighter->ApplyDamage(20);
+	enemy->fighter->ApplyDamage(25);
 		
 	delete ray;
 	ChangeStateTo(State::idle);

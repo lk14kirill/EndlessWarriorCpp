@@ -15,7 +15,7 @@ void Game::Init()
 {
     Player* player = new Player();
     fabric->RegisterObject(updateObjects, drawObjects, player);
-    fabric->RegisterObject(updateObjects, drawObjects, new Enemy());
+    fabric->CreateAndRegisterEnemy(updateObjects, drawObjects);
     timeUntilupdate /= Values::targetFPS;
     OnMouseInput = boost::bind(&Controller::GetMouseInput, player->controller);
     OnKeyboardInput = boost::bind(&Controller::GetKeyboardInput, player->controller);
@@ -45,6 +45,7 @@ void Game::GameCycle()
         Input();
 
         updateObjects->Update(time);
+        fabric->CheckIfEnemyNeeded(updateObjects, drawObjects);
 
         (*window).clear(Color::White);
         drawObjects->Draw(window);

@@ -14,7 +14,7 @@ void DrawableObjects::Remove(Actor* drawable)
 	{
 		if (drawables[i]->GetObject() == drawable->GetObject())
 		{
-			delete drawable;
+			
 			drawables.erase(drawables.begin() + i);
 		}
 	}

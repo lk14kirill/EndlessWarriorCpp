@@ -14,6 +14,7 @@ public:
 	bool IsColliding(Actor* actor,sf::Vector2f direction, std::vector<Actor*> objects, CollisionType colType);
 	bool IsPointInBound(sf::Vector2f point, Actor* act, CollisionType);
 private:
+	bool IsAboveActor(Actor* actor, sf::Vector2f direction, std::vector<Actor*> objects);
 	bool IsInBound(Actor* actor, sf::Vector2f direction,  Actor* act,CollisionType);
 	bool IsInBoundX(float actorPos1, float actorPos2, float halfSize1, float halfSize2);
 	bool IsInBoundY(float actorPos1, float actorPos2, float halfSize1, float halfSize2);

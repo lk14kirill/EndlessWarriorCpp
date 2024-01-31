@@ -8,10 +8,17 @@ void Collider::Update(Actor* actor, sf::Vector2f direction, std::vector<Actor*> 
 {
 	if(IsColliding(actor,direction,objects,CollisionType::both))
 	{
-	    if (IsColliding(actor, direction, objects, CollisionType::vertical))
-			actor->AddPosition(Vector2f(0, -0.5f));
-		else if (IsColliding(actor, direction, objects, CollisionType::horizontal))
+		if (IsAboveActor(actor, direction, objects) && IsColliding(actor, direction, objects, CollisionType::horizontal))
+			actor->AddPosition(Vector2f(direction.x, -1));
+		if (IsColliding(actor, direction, objects, CollisionType::horizontal))
 			actor->AddPosition(-direction);
+	  /*  if (IsColliding(actor, direction, objects, CollisionType::vertical) && 
+			IsColliding(actor, direction, objects, CollisionType::horizontal))
+		{ 
+			actor->AddPosition(Vector2f(direction.x, -0.5f));
+		}*/
+
+		 
 	}
 }
 
@@ -47,6 +54,20 @@ bool Collider::IsPointInBound(sf::Vector2f point, Actor* act, CollisionType colT
 		result = IntersectWithPoint(point.x, actorPos2.x - halfSize2.x, actorPos2.x + halfSize2.x) &&
 			IntersectYWithPoint(point.y, actorPos2.y - halfSize2.y, actorPos2.y + halfSize2.y);
 		break;
+	}
+	return result;
+}
+bool Collider::IsAboveActor(Actor* actor, sf::Vector2f direction, std::vector<Actor*> objects)
+{
+	bool result = false;
+	for (Actor* act : objects)
+	{
+		if (!dynamic_cast<const FightActor*>(act) || actor == act)
+			continue;
+
+
+		if (IsPointInBound(sf::Vector2f(act->GetCenterPosition().x,act->GetCenterPosition().y - act->GetSize().y/1.8),actor,CollisionType::vertical))
+			result = true;
 	}
 	return result;
 }
@@ -101,5 +122,5 @@ bool Collider::IntersectWithPoint(float x, float min1, float max1)
 }
 bool Collider::IntersectYWithPoint(float y, float min1, float max1)
 {
-	return y >= min1 && y <= max1;
+	return y > min1 && y < max1;
 }

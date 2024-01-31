@@ -3,7 +3,7 @@
 void Fighter::ApplyDamage(float damage)
 {
 	health -= damage;
-	Debug::Log(std::to_string(health), DebugMessageType::INFO);
+	Debug::Log(std::to_string(health), DebugMessageType::ERROR);
 	Debug::Log("OUCH!", DebugMessageType::FUN);
 }
 void Fighter::ApplyHealing(float heal)
@@ -27,4 +27,10 @@ void Fighter::SetMaxHealth(float newMaxHealth)
 Fighter::~Fighter() 
 {
 
+}
+bool Fighter::IsDead()
+{
+	if (health <= 0)
+		return true;
+	return false;
 }

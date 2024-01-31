@@ -16,7 +16,7 @@ public:
 	FightActor();
 	virtual ~FightActor();
 
-
+	
 	bool facingRight = true;
 	float health = 100;
 	float speed = 1;

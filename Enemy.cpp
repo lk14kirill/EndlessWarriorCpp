@@ -10,7 +10,7 @@
 
 Enemy::Enemy()
 {
-	object->setFillColor(sf::Color::Green);
+	object->setFillColor(sf::Color::Color(rand() % 255, rand() % 255, rand() % 255));
 	object->setPosition(sf::Vector2f(100, 500));
 	speed = 2;
 }
