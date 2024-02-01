@@ -12,9 +12,8 @@
 
 Enemy::Enemy()
 {
-	//object->setFillColor(sf::Color::Color(rand() % 255, rand() % 255, rand() % 255));
 	object->setPosition(sf::Vector2f(100, 500));
-	animator->AssignImagesForAnimation("Assets/Images/EnemyKnight/", "idle", 26);
+	animator->AssignImagesForAnimation("Assets/Images/EnemyKnight/", "idle");
 	animator->SetSwitchTime(0.075f);
 	speed = 2;
 }

@@ -1,20 +1,28 @@
 #include "Animator.h"
+#include <filesystem>
 using namespace std;
+namespace fs = std::filesystem;
 
 Animator::Animator(float switchTime)
 {
-	textures = std::vector<EWTexture*>();
+	textures = vector<EWTexture*>();
+	animations = vector<AnimationInfo*>();
 	this->switchTime = switchTime;
 	totalTime = 0.0f;
 	currentImage = 0;
+	startIndex = 0;
 }
-
 Animator::~Animator()
 {
-	for(EWTexture* text : textures)
+	for(EWTexture* texture : textures)
 	{
-		delete text;
+		delete texture;
 	}
+	for (AnimationInfo* anim : animations)
+	{
+		delete anim;
+	}
+	animations.clear();
 	textures.clear();
 }
 
@@ -25,8 +33,8 @@ void Animator::Update(float deltaTime, State state)
 	{
 		totalTime -= switchTime;
 		currentImage++;
-		if (currentImage >= idleImageCount)
-			currentImage = 0;
+		if (currentImage >= startIndex +imageCount)
+			currentImage = startIndex;
 	}
 	currTexture = textures.at(currentImage);
 }
@@ -36,16 +44,56 @@ void Animator::SetSwitchTime(float time)
 	switchTime = time;
 }
 
-void Animator::AssignImagesForAnimation(string path, string type, int imagesCount)
+void Animator::AssignImagesForAnimation(string path, string type)
 {
-	if (type == "idle")
-		idleImageCount = imagesCount;
+	int startIndex = textures.size(); 
+	int i = 0;
 
-  for(int i = 0;i < imagesCount;i++)
-  {
-	  EWTexture* text = new EWTexture();
-	  text->name = type + to_string(i);
-	  text->texture.loadFromFile(path + type + to_string(i)+".png");
-	  textures.push_back(text);
-  }
+	string fileName = path + type + to_string(i)+ ".png";
+	while (fs::exists(fileName))
+	{
+		EWTexture* text = new EWTexture();
+		text->name = type + to_string(i);
+		text->texture.loadFromFile(path + type + to_string(i) + ".png");
+		textures.push_back(text);
+
+		i++;
+		fileName = path + type + to_string(i) + ".png";
+		imageCount++;
+	}
+  if (type == "idle")
+	  animations.push_back(new AnimationInfo("idle", startIndex, i));
 }
+
+void Animator::ChangeState(State state)
+{
+	switch(state)
+	{
+	case State::idle:
+		SetProperValues("idle");
+			break;
+	case State::attack:
+		SetProperValues("attack");
+		break;
+	case State::moving:
+		SetProperValues("moving");
+		break;
+	}
+}
+AnimationInfo* Animator::GetProperAnimation(std::string name)
+{
+	for (AnimationInfo* anim : animations)
+		if (anim->name == name) return anim;
+	return animations[0];
+}
+
+void Animator::SetProperValues(std::string name)
+{
+	AnimationInfo* anim = GetProperAnimation(name);
+	currentImage = anim->startIndex;
+	startIndex = anim->startIndex;
+	imageCount = anim->countImages;
+}
+
+
+

@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>;
-#include "SFML/Graphics.hpp";
 struct Values
 {
 public:
@@ -8,11 +6,6 @@ public:
 	const static int windowY = 1080;
 	const static int targetFPS = 200;
 
-};
-struct EWTexture {
-public:
-	sf::Texture texture;
-	std::string name;
 };
 enum CollisionType
 {
