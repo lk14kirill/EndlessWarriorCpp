@@ -103,12 +103,15 @@ void Player::Attack(std::vector<Actor*> updatables, float damage)
 {
 	if (state != State::attack)
 		return;
+
 	Ray* ray = physics->RayCast(enemies, collider, sf::Vector2f(GetCenterPosition().x + GetSize().x / 2, GetCenterPosition().y), 
-		NormalizedVector::right, attackDistance);
+		facingRight ? NormalizedVector::right : NormalizedVector::left, attackDistance);
+
 	if (ray->GetHitInfo() == nullptr)
 	{
 		Debug::Log("RayHit info is null", DebugMessageType::ERROR);
 		ChangeStateTo(State::idle);
+		delete ray;
 		return;
 	}
 	FightActor* enemy = dynamic_cast<FightActor*>(ray->GetHitInfo());
@@ -120,5 +123,4 @@ void Player::Attack(std::vector<Actor*> updatables, float damage)
 Player::~Player()
 {
 	delete controller;
-	delete fighter;
 }

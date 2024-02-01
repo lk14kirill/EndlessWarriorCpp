@@ -5,6 +5,9 @@
 class Fighter;
 class Collider;
 class Physics;
+class EWTexture;
+class Animator;
+enum State;
 
 class FightActor : public Actor
 {
@@ -23,10 +26,14 @@ public:
 	Fighter* fighter;
 
 protected:
+	sf::Texture texture;
 	Physics* physics;
 	Collider* collider;
+	Animator* animator;
+	State state;
 	bool CanAttack();
 	void AttackCD(float time);
+	void AssignTexture(std::string path);
 
 	float attackCDTime = 2;
 	float nextAttackTime;

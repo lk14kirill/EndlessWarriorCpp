@@ -7,11 +7,15 @@
 #include "Player.h"
 #include "Collider.h"
 #include "Debug.h"
+#include "Animator.h"
+#include "Values.h"
 
 Enemy::Enemy()
 {
-	object->setFillColor(sf::Color::Color(rand() % 255, rand() % 255, rand() % 255));
+	//object->setFillColor(sf::Color::Color(rand() % 255, rand() % 255, rand() % 255));
 	object->setPosition(sf::Vector2f(100, 500));
+	animator->AssignImagesForAnimation("Assets/Images/EnemyKnight/", "idle", 26);
+	animator->SetSwitchTime(0.075f);
 	speed = 2;
 }
 void Enemy::Update(UpdatableObjects* updatables, float time)
@@ -19,6 +23,8 @@ void Enemy::Update(UpdatableObjects* updatables, float time)
 	
 	AddPosition(physics->Update(this, 0,mass, time));
 	CalculateMoveDirection(updatables->GetUpdatable<Player>()->GetObject()->getPosition());
+	animator->Update(time, state);
+	object->setTexture(&animator->currTexture->texture);
 	Move(updatables->updatables);
 	Attack(updatables->updatables, 1);
 

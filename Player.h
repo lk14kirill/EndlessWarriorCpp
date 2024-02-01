@@ -8,11 +8,7 @@ class Controller;
 class UpdatableObjects;
 class Player : public FightActor
 {
-	enum State {
-		attack,
-		idle,
-		moving
-	};
+
 public:
 	Player();
 	void Update(UpdatableObjects* updatables, float time) override;
@@ -38,8 +34,5 @@ private:
 	std::vector<Actor*> enemies;
 	float jumpForce = 20;
 	float lastDeltaTime;
-	
-	
-	State state;
 
 };

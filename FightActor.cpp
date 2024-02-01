@@ -2,22 +2,30 @@
 #include "Physics.h"
 #include "Collider.h"
 #include "Fighter.h"
+#include "Animator.h"
 
 FightActor::FightActor()
 {
 	collider = new Collider();
 	physics = new Physics();
 	fighter = new Fighter();
+	animator = new Animator(0.5f);
 }
 FightActor::~FightActor()
 {
 	delete physics;
 	delete collider;
 	delete fighter;
+	delete animator;
 }
 void FightActor::AttackCD(float time)
 {
 	nextAttackTime += time;
+}
+void FightActor::AssignTexture(string path)
+{
+	texture.loadFromFile(path);
+	object->setTexture(&texture);
 }
 bool FightActor::CanAttack()
 {

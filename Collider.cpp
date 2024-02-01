@@ -12,13 +12,6 @@ void Collider::Update(Actor* actor, sf::Vector2f direction, std::vector<Actor*> 
 			actor->AddPosition(Vector2f(direction.x, -1));
 		if (IsColliding(actor, direction, objects, CollisionType::horizontal))
 			actor->AddPosition(-direction);
-	  /*  if (IsColliding(actor, direction, objects, CollisionType::vertical) && 
-			IsColliding(actor, direction, objects, CollisionType::horizontal))
-		{ 
-			actor->AddPosition(Vector2f(direction.x, -0.5f));
-		}*/
-
-		 
 	}
 }
 
