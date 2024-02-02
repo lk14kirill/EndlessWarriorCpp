@@ -10,6 +10,7 @@
 #include "Enemy.h" 
 #include "boost/bind.hpp"
 #include "Controller.h"
+#include <ctime>
 
 void Game::Init()
 {
@@ -35,6 +36,7 @@ void Game::PlayGame()
 }
 void Game::GameCycle()
 {
+    srand(std::time(0));
 
     WaitNextFrame();
     if(totaltimeUntilUpdate >= timeUntilupdate)

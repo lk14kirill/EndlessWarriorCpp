@@ -14,7 +14,10 @@ Enemy::Enemy()
 {
 	object->setPosition(sf::Vector2f(100, 500));
 	animator->AssignImagesForAnimation("Assets/Images/EnemyKnight/", "idle");
+	animator->AssignImagesForAnimation("Assets/Images/EnemyKnight/", "attack");
 	animator->SetSwitchTime(0.075f);
+	animator->playRandomlySameAnimations = true;
+	animator->ChangeState(attack);
 	speed = 2;
 }
 void Enemy::Update(UpdatableObjects* updatables, float time)
@@ -22,7 +25,7 @@ void Enemy::Update(UpdatableObjects* updatables, float time)
 	
 	AddPosition(physics->Update(this, 0,mass, time));
 	CalculateMoveDirection(updatables->GetUpdatable<Player>()->GetObject()->getPosition());
-	animator->Update(time, state);
+	animator->Update(time);
 	object->setTexture(&animator->currTexture->texture);
 	Move(updatables->updatables);
 	Attack(updatables->updatables, 1);

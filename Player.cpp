@@ -10,6 +10,7 @@
 #include "Collider.h"
 #include "Debug.h"
 #include "Ray.h"
+#include "Animator.h"
 
 #include "iostream"
 Player::Player() 
@@ -19,10 +20,12 @@ Player::Player()
 	object->setPosition(sf::Vector2f(500, 500));
 	speed = 7;
 	attackDistance = 20;
-	ChangeStateTo(State::idle);
+	
 	attackCDTime = 1;
 	controller->OnMouseClick = boost::bind(&Player::MouseInput, this);
 	controller->OnKeyboardClick = boost::bind(&Player::MoveInput, this);
+
+	ChangeStateTo(State::attack);
 }
 void Player::Delegates()
 {
@@ -42,7 +45,6 @@ void Player::Update(UpdatableObjects* updatables, float time)
 	Move(enemies);
 	AttackCD(lastDeltaTime);
 	Attack(updatables->GetUpdatables<Actor>(), 20);
-
 	
 	LastUpdate();
 	
@@ -73,6 +75,7 @@ void Player::MoveInput()
 void Player::ChangeStateTo(State newState)
 {
 	state = newState;
+	//animator->ChangeState(newState);
 	Debug::Log("Changed state to " + std::to_string(newState), DebugMessageType::INFO);
 }
 void Player::MouseInput()

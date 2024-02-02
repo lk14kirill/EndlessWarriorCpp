@@ -9,7 +9,7 @@ FightActor::FightActor()
 	collider = new Collider();
 	physics = new Physics();
 	fighter = new Fighter();
-	animator = new Animator(0.5f);
+	animator = new Animator(0.5f,false);
 }
 FightActor::~FightActor()
 {
